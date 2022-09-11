@@ -5,51 +5,31 @@ export default {
   },
   data() {
     return {
+      /* input */
+      name: '',
+      addr: '',
+      size: '',
+
+      dataList: [{ name: 'Harf Road', addr: '합정동', size: '30평' }],
+
       sizeList: ['10평', '20평', '30평', '40평', '50평'],
     };
   },
-  // methods: {
-  //   show_order() {
-  //     $.ajax({
-  //       type: 'GET',
-  //       url: '/mars/mars',
-  //       data: {},
-  //       success: function (res) {
-  //         this.createOrderList(res);
-  //       },
-  //     });
-  //   },
-  //   createOrderList(orders) {
-  //     for (const order of orders) {
-  //       $('tbody').append(
-  //         `<tr>
-  //             <td>${order.name}</td>
-  //             <td>${order.address}</td>
-  //             <td>${order.size}</td>
-  //           </tr>`,
-  //       );
-  //     }
-  //   },
-  //   save_order() {
-  //     let name = $('#name').val();
-  //     let address = $('#address').val();
-  //     let size = $('#size').val();
+  methods: {
+    saveOrder() {
+      const data = {
+        name: this.name,
+        addr: this.addr,
+        size: this.size,
+      };
 
-  //     $.ajax({
-  //       type: 'POST',
-  //       url: '/mars/mars',
-  //       data: {
-  //         name: name,
-  //         address: address,
-  //         size: size,
-  //       },
-  //       success: function (response) {
-  //         alert(response['msg']);
-  //         window.location.reload();
-  //       },
-  //     });
-  //   },
-  // },
+      this.dataList.push(data);
+
+      this.name = '';
+      this.addr = '';
+      this.size = '';
+    },
+  },
 };
 </script>
 
@@ -62,18 +42,30 @@ export default {
         화성에 땅을 사둘 수 있다고?<br />
         앞으로 백년 간 오지 않을 기회. 화성에서 즐기는 노후!
       </p>
-      <div class="order-info">
+      <form @submit.prevent="saveOrder" class="order-info">
         <div class="input-group mb-3">
           <span class="input-group-text">이름</span>
-          <input id="name" type="text" class="form-control" />
+          <input
+            v-model="name"
+            type="text"
+            class="form-control"
+            placeholder="이름을 입력해주세요"
+            required
+          />
         </div>
         <div class="input-group mb-3">
           <span class="input-group-text">주소</span>
-          <input id="address" type="text" class="form-control" />
+          <input
+            v-model="addr"
+            type="text"
+            class="form-control"
+            placeholder="주소를 입력해주세요"
+            required
+          />
         </div>
         <div class="input-group mb-3">
           <label class="input-group-text" for="size">평수</label>
-          <select class="form-select" id="size">
+          <select v-model="size" class="form-select" required>
             <option selected>-- 주문 평수 --</option>
             <option
               v-for="(size, index) in sizeList"
@@ -84,14 +76,8 @@ export default {
             </option>
           </select>
         </div>
-        <button
-          onclick="save_order()"
-          type="button"
-          class="btn btn-warning mybtn"
-        >
-          주문하기
-        </button>
-      </div>
+        <button class="btn btn-warning mybtn">주문하기</button>
+      </form>
       <table class="table">
         <thead>
           <tr>
@@ -101,10 +87,10 @@ export default {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Half Road</td>
-            <td>Address</td>
-            <td>Size</td>
+          <tr v-for="(data, index) in dataList" :key="index">
+            <td>{{ data.name }}</td>
+            <td>{{ data.addr }}</td>
+            <td>{{ data.size }}</td>
           </tr>
         </tbody>
       </table>
@@ -133,8 +119,12 @@ h1 {
   font-weight: bold;
 }
 
+.input-group input,
+.input-group select {
+  color: #222;
+}
 .input-group-text {
-  color: black;
+  color: #222;
 }
 .order {
   width: 500px;
