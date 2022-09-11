@@ -1,3 +1,35 @@
+<script>
+import { ref } from 'vue';
+
+export default {
+  setup() {
+    const dataList = ref([
+      { name: 'Half Road', comment: '아이유씨 너무 에쁩니다💕' },
+    ]);
+
+    const name = ref('');
+    const comment = ref('');
+    const saveComment = () => {
+      const data = {
+        name: name.value,
+        comment: comment.value,
+      };
+
+      dataList.value.push(data);
+      name.value = '';
+      comment.value = '';
+    };
+
+    return {
+      name,
+      comment,
+      dataList,
+      saveComment,
+    };
+  },
+};
+</script>
+
 <template>
   <div>
     <section class="title">
@@ -5,13 +37,14 @@
       <p>현재기온 : <span id="temp">00.0도</span></p>
     </section>
     <section class="sect-hole">
-      <section class="sect-write">
+      <form @submit.prevent="saveComment" class="sect-write">
         <div class="form-floating mb-3">
           <input
             type="text"
             class="form-control"
             id="userNm"
             placeholder="닉네임"
+            v-model="name"
           />
           <label for="userNm">닉네임</label>
         </div>
@@ -20,21 +53,21 @@
             class="form-control"
             placeholder="Leave a comment here"
             id="comment"
+            v-model="comment"
           ></textarea>
           <label for="comment">응원댓글</label>
         </div>
-        <button type="button" class="btn btn-dark" onclick="saveCheer()">
-          응원 남기기
-        </button>
+        <button class="btn btn-dark">응원 남기기</button>
+      </form>
+      <section class="sect-comment">
+        <article v-for="(data, index) in dataList" :key="index">
+          <h4 class="comment">{{ data.comment }}</h4>
+          <h5 class="userNm">-- {{ data.name }}</h5>
+        </article>
       </section>
-      <section class="sect-comment"></section>
     </section>
   </div>
 </template>
-
-<script>
-export default {};
-</script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nanum+Gothic&family=Nanum+Gothic+Coding:wght@400;700&display=swap');
