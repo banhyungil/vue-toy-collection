@@ -1,11 +1,17 @@
 <script>
 import { ref } from 'vue';
+import axios from 'axios';
 
 export default {
   setup() {
-    const dataList = ref([
-      { name: 'Half Road', comment: '아이유씨 너무 에쁩니다💕' },
-    ]);
+    const dataList = ref([]);
+    const getList = () => {
+      const instance = axios.create({ baseURL: 'http://localhost:5000' });
+      instance.get('/fandiary').then((res) => {
+        dataList.value = res.data;
+      });
+    };
+    getList();
 
     const name = ref('');
     const comment = ref('');
