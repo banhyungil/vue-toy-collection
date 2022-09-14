@@ -1,7 +1,40 @@
 {
-  "fandiary": [{
-    "id": 1,
-    "name": "Half Road",
-    "comment": "응원합니다 이유님!!💕"
-  }]
+  "fandiary": [
+    {
+      "id": 1,
+      "name": "Half Road",
+      "comment": "응원합니다 이유님!!💕"
+    },
+    {
+      "name": "반반",
+      "comment": "이유짱",
+      "id": 2
+    }
+  ],
+  "mars": [
+    {
+      "id": 1,
+      "name": "Half Road",
+      "addr": "합정동",
+      "size": "30평"
+    },
+    {
+      "name": "반반",
+      "addr": "합정",
+      "size": "30평",
+      "id": 2
+    }
+  ],
+  "bucket": [
+    {
+      "id": 1,
+      "contents": "vue js 마스터하기",
+      "done": true
+    },
+    {
+      "contents": "vue ㅏㄱ즈아",
+      "id": 2,
+      "done": false
+    }
+  ]
 }

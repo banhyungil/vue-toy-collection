@@ -1,7 +1,8 @@
 <script>
+import * as mars from '@/api/mars';
 export default {
   mounted() {
-    //this.show_order();
+    this.getList();
   },
   data() {
     return {
@@ -10,7 +11,7 @@ export default {
       addr: '',
       size: '',
 
-      dataList: [{ name: 'Harf Road', addr: '합정동', size: '30평' }],
+      dataList: [],
 
       sizeList: ['10평', '20평', '30평', '40평', '50평'],
     };
@@ -23,11 +24,14 @@ export default {
         size: this.size,
       };
 
-      this.dataList.push(data);
+      mars.createMars(data).then(() => {
+        this.getList();
+      });
+    },
+    async getList() {
+      const { data } = await mars.getList();
 
-      this.name = '';
-      this.addr = '';
-      this.size = '';
+      this.dataList = data;
     },
   },
 };

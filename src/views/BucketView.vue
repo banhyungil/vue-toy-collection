@@ -1,3 +1,31 @@
+<script setup>
+import { ref } from 'vue';
+import * as bucket from '@/api/bucket';
+
+const contents = ref('');
+const bucketList = ref([]);
+
+// getList, 최초 호출
+const getList = async () => {
+  const { data } = await bucket.getList();
+  bucketList.value = data;
+};
+getList();
+
+const saveBucket = () => {
+  bucket.createBucket({ contents: contents.value }).then(() => {
+    contents.value = '';
+    getList();
+  });
+};
+
+const saveBucketDone = (data) => {
+  bucket.updateBucket(data.id, { done: true }).then(() => {
+    getList();
+  });
+};
+</script>
+
 <template>
   <div>
     <div class="mypic">
@@ -10,9 +38,10 @@
           class="form-control"
           type="text"
           placeholder="이루고 싶은 것을 입력하세요"
+          v-model="contents"
         />
         <button
-          onclick="saveBucket()"
+          @click="saveBucket"
           type="button"
           class="btn btn-outline-primary"
         >
@@ -20,13 +49,21 @@
         </button>
       </div>
     </div>
-    <div class="mybox" id="bucket-list"></div>
+    <div class="mybox" id="bucket-list">
+      <li v-for="bucket in bucketList" :key="bucket.id">
+        <h2 :class="{ done: bucket.done }">✅ {{ bucket.contents }}</h2>
+        <button
+          @click="saveBucketDone(bucket)"
+          type="button"
+          class="btn btn-outline-primary"
+          v-if="!bucket.done"
+        >
+          완료!
+        </button>
+      </li>
+    </div>
   </div>
 </template>
-
-<script>
-export default {};
-</script>
 
 <style scoped>
 .mypic {

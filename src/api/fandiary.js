@@ -1,7 +1,11 @@
-import { fandiary } from '.';
+import { create } from '.';
+
+const cusAxios = create('/fandiary');
 
 export function getList() {
-  return fandiary.get('/').then((res) => {
-    return res;
-  });
+  return cusAxios.get('/');
+}
+
+export function createFandiary(data) {
+  return cusAxios.post('/', data);
 }

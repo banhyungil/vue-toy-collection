@@ -7,7 +7,6 @@ export default {
     const dataList = ref([]);
     const getList = async () => {
       const { data } = await fandiary.getList();
-      console.log('data :', data);
 
       dataList.value = data;
     };
@@ -21,9 +20,11 @@ export default {
         comment: comment.value,
       };
 
-      dataList.value.push(data);
-      name.value = '';
-      comment.value = '';
+      fandiary.createFandiary(data).then(() => {
+        getList();
+        name.value = '';
+        comment.value = '';
+      });
     };
 
     return {
@@ -66,7 +67,7 @@ export default {
         <button class="btn btn-dark">응원 남기기</button>
       </form>
       <section class="sect-comment">
-        <article v-for="(data, index) in dataList" :key="index">
+        <article v-for="data in dataList" :key="data.id">
           <h4 class="comment">{{ data.comment }}</h4>
           <h5 class="userNm">-- {{ data.name }}</h5>
         </article>
@@ -125,8 +126,8 @@ article .comment {
 
 article .userNm {
   /* <property> <duration> <timing-function> <delay>
-        property : 속성값 명시, all로 설정시 모든 속성에 적용
-        */
+    property : 속성값 명시, all로 설정시 모든 속성에 적용
+    */
   transition: color 0.4s ease;
 }
 article .userNm {
@@ -135,9 +136,10 @@ article .userNm {
 }
 .sect-comment > article:hover > .comment {
   font-weight: bolder;
-  /* inset | offset-x | offset-y | color
-        inset : 안에서 그림자가 드리운다
-        */
+  /* 
+     inset | offset-x | offset-y | color
+     inset : 안에서 그림자가 드리운다
+  */
   box-shadow: inset 600px 0 0 #fff685;
 }
 .sect-comment > article:hover > .userNm {
