@@ -1,15 +1,15 @@
 <script>
 import { ref } from 'vue';
-import axios from 'axios';
+import * as fandiary from '@/api/fandiary';
 
 export default {
   setup() {
     const dataList = ref([]);
-    const getList = () => {
-      const instance = axios.create({ baseURL: 'http://localhost:5000' });
-      instance.get('/fandiary').then((res) => {
-        dataList.value = res.data;
-      });
+    const getList = async () => {
+      const { data } = await fandiary.getList();
+      console.log('data :', data);
+
+      dataList.value = data;
     };
     getList();
 
